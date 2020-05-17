@@ -1,0 +1,61 @@
+//
+//  ViewController.swift
+//  PopUpWithBlur
+//
+//  Created by Павел Кузин on 17.05.2020.
+//  Copyright © 2020 Павел Кузин. All rights reserved.
+//
+
+import UIKit
+
+class ViewController: UIViewController {
+    
+    @IBOutlet weak var popUpView: UIView!
+    @IBOutlet weak var visualEffectView: UIVisualEffectView!
+    @IBOutlet weak var popUpLabel: UILabel!
+
+    var effect: UIVisualEffect!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        effect = visualEffectView.effect
+        visualEffectView.effect = nil
+        
+        popUpView.layer.cornerRadius = 10
+    }
+//MARK: Animations
+    func animateIn()  {
+        self.view.addSubview(popUpView)
+        popUpView.center = self.view.center
+        
+        popUpView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
+        popUpView.alpha = 0
+        
+        UIView.animate(withDuration: 0.4) {
+            self.visualEffectView.effect = self.effect
+            self.popUpView.alpha = 1
+            self.popUpView.transform = CGAffineTransform.identity
+        }
+    }
+    
+    func animateOut() {
+        
+        UIView.animate(withDuration: 0.4, animations: {
+            self.popUpView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
+            self.popUpView.alpha = 0
+            
+            self.visualEffectView.effect = nil
+            
+        }) { (success: Bool) in
+            self.popUpView.removeFromSuperview()
+        }
+    }
+//MARK: Buttons
+    @IBAction func addItem (_ sender: AnyObject) {
+        animateIn()
+    }
+    @IBAction func dissmissPopUp(_ sender: AnyObject){
+        animateOut()
+    }
+}
