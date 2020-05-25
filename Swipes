@@ -1,0 +1,86 @@
+//
+//  ViewController.swift
+//  Swipes
+//
+//  Created by Павел Кузин on 24.05.2020.
+//  Copyright © 2020 Павел Кузин. All rights reserved.
+//
+
+import UIKit
+
+class ViewController: UIViewController {
+
+    var centerView = UIView()
+    var directionLabel = UILabel()
+    
+    let swipeUp = UISwipeGestureRecognizer()
+    let swipeLeft = UISwipeGestureRecognizer()
+    let swipeRight = UISwipeGestureRecognizer()
+    let swipeDown = UISwipeGestureRecognizer()
+
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        swipes()
+        configureView()
+        configureLabel()
+    }
+
+    func configureView()  {
+        
+        centerView.backgroundColor = UIColor.red
+        centerView.layer.cornerRadius = 20
+        centerView.layer.masksToBounds = true
+        centerView.frame = CGRect(x: 16, y: 200, width: self.view.frame.width - 32, height: 400)
+        self.view.addSubview(centerView)
+    }
+    
+    func configureLabel(){
+        
+        directionLabel.text = "Welcome to Depo Studio"
+        directionLabel.textColor = UIColor.white
+        directionLabel.textAlignment = .center
+        directionLabel.numberOfLines = 0
+        directionLabel.font = UIFont.boldSystemFont(ofSize: 30)
+        directionLabel.frame = CGRect(x: 16, y: 200, width: self.centerView.frame.width - 32, height: 384)
+        self.view.addSubview(directionLabel)
+    }
+    
+    func swipes() {
+        
+        self.centerView.addGestureRecognizer(swipeUp)
+        self.centerView.addGestureRecognizer(swipeLeft)
+        self.centerView.addGestureRecognizer(swipeRight)
+        self.centerView.addGestureRecognizer(swipeDown)
+        
+        swipeUp.direction = .up
+        swipeLeft.direction = .left
+        swipeRight.direction = .right
+        swipeDown.direction = .down
+        
+        swipeUp.addTarget(self, action: #selector(Swipe(sender:)))
+        swipeLeft.addTarget(self, action: #selector(Swipe(sender:)))
+        swipeRight.addTarget(self, action: #selector(Swipe(sender:)))
+        swipeDown.addTarget(self, action: #selector(Swipe(sender:)))
+    }
+    
+    @objc func Swipe(sender: UISwipeGestureRecognizer){
+        
+        switch sender.direction {
+        case .up:
+            directionLabel.text = "Direction UP"
+            centerView.backgroundColor = UIColor.green
+        case .left:
+            directionLabel.text = "Direction LEFT"
+            centerView.backgroundColor = UIColor.blue
+        case .right:
+            directionLabel.text = "Direction RIGHT"
+            centerView.backgroundColor = UIColor.purple
+        case .down:
+            directionLabel.text = "Direction DOWN"
+            centerView.backgroundColor = UIColor.cyan
+        default:
+            directionLabel.text = ""
+        }
+    }
+}
